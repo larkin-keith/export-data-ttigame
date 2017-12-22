@@ -28,7 +28,6 @@ class ExportRes(object):
 	def __getRes(self):
 		connectDb = ConnectDb()
 		res = connectDb.connect().table(self._table).select(self._select).where('release_status', '=', self._status).whereIn('id', self.__getIds()).get()
-		connectDb.close()
 		return res
 
 	def exportExcel(self):

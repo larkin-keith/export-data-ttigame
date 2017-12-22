@@ -72,7 +72,11 @@ class ConnectDb(object):
 				self._db_where_in_field, 
 				self._db_where_in_datas
 		))
-		return self._cursor.fetchall()
+
+		result = self._cursor.fetchall()
+		self.close()
+
+		return result
 
 	def close(self):
 		self._cursor.close()
@@ -82,4 +86,3 @@ if __name__ == '__main__':
     db = ConnectDb()
     # print(db.connect().select('softwares_view', 'id,name', '1,2,3').get())
     print(db.connect().table('games_view').select('id,name').where('release_status', '=', 'show').whereIn('id', '1,2,3').get())
-    db.close()
