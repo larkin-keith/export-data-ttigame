@@ -9,15 +9,16 @@ import mysql.connector
 
 class ConnectDb(object):
 
-	def __init__(self, host, user, password, db):
+	def __init__(self, host, user, password, db, port):
 		self._host = host
 		self._user = user
 		self._password = password
 		self._db = db
+		self._port = port
 
 	def connect(self):
 		try:
-			self._conn = mysql.connector.connect(host = self._host, user = self._user, password = self._password, database = self._db)
+			self._conn = mysql.connector.connect(host = self._host, user = self._user, password = self._password, database = self._db, port = self._port)
 			self._cursor = self._conn.cursor()
 			# print(self._cursor)
 			return self
@@ -75,7 +76,7 @@ class ConnectDb(object):
 		self._conn.close()
 
 if __name__ == '__main__':
-    db = ConnectDb('127.0.0.1', 'root', 'root', 'appcenter')
+    db = ConnectDb('127.0.0.1', 'root', 'root', 'appcenter', '3306')
     # print(db.connect().select('softwares_view', 'id,name', '1,2,3').get())
     print(db.connect().table('softwares_view').select('id,name').where('release_status', '=', 'show').whereIn('id', '1,2,3').get())
     db.close()

@@ -12,5 +12,6 @@ class Config(Enum):
 		'host': '127.0.0.1',
 		'user': 'root',
 		'password': 'root',
-		'db': 'appcenter'
+		'db': 'appcenter',
+		'port': '3306'
 	}
