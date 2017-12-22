@@ -7,19 +7,13 @@ __author__ = 'Lavenkin'
 
 import os
 
-from Config import *
 from FormatTxt import *
 from ConnectDb import *
 from openpyxl import Workbook
 
 class ExportRes(object):
 
-	def __init__(self, host, user, password, db, port, table, status, select):
-		self._host = host
-		self._user = user
-		self._password = password
-		self._db = db
-		self._port = port
+	def __init__(self, table, status, select):
 		self._table = table
 		self._status = status
 		self._select = select
@@ -32,11 +26,11 @@ class ExportRes(object):
 			return f.read()
 
 	def __getRes(self):
-		connectDb = ConnectDb(self._host, self._user, self._password, self._db, self._port)
+		connectDb = ConnectDb()
 		res = connectDb.connect().table(self._table).select(self._select).where('release_status', '=', self._status).whereIn('id', self.__getIds()).get()
 		connectDb.close()
 		return res
-		
+
 	def exportExcel(self):
 		print('正在导出Excel文档请稍等...')
 		wb = Workbook()
@@ -48,16 +42,10 @@ class ExportRes(object):
 		print('文件导出成功，请在./file目录下查看导出文档')
 
 if __name__ == '__main__':
-	mysql = Config.Mysql.value
-	host = mysql['host']
-	user = mysql['user']
-	password = mysql['password']
-	db = mysql['db']
-	port = mysql['port']
 
 	table = input('please enter you want to search table (like games_view or softwares_view): ')
 	status = input('please enter you want to display status (like show or hide): ')
 	fields = input('please enter you want to search fields (like id, name, level): ')
 
-	e = ExportRes(host, user, password, db, port, table, status, fields)
+	e = ExportRes(table, status, fields)
 	e.exportExcel()
