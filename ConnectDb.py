@@ -32,9 +32,15 @@ class ConnectDb(object):
 		self._db_select = select
 		return self
 
-	def whereIn(self, field, data):
+	def whereIn(self, field, datas):
 		self._db_where_in_field = field
-		self._db_where_in_data = data
+		self._db_where_in_datas = datas
+		return self
+
+	def where(self, field, condition, data):
+		self._db_where_field = field
+		self._db_where_condition = condition
+		self._db_where_data = data
 		return self
 
 	# def select(self, table, fields, conditions):
@@ -44,8 +50,24 @@ class ConnectDb(object):
 	# 	return self
 
 	def get(self):
-		# print('select %s from %s where id in %s' % (self._db_select, self._db_table, self._db_where))
-		self._cursor.execute('select %s from %s where %s in (%s)' % (self._db_select, self._db_table, self._db_where_in_field, self._db_where_in_data))
+		# print('select %s from %s where %s %s \'%s\' and %s in (%s)' % (
+		# 		self._db_select, 
+		# 		self._db_table,
+		# 		self._db_where_field,
+		# 		self._db_where_condition,
+		# 		self._db_where_data,
+		# 		self._db_where_in_field, 
+		# 		self._db_where_in_datas
+		# ))
+		self._cursor.execute('select %s from %s where %s %s \'%s\' and %s in (%s)' % (
+				self._db_select, 
+				self._db_table,
+				self._db_where_field,
+				self._db_where_condition,
+				self._db_where_data,
+				self._db_where_in_field, 
+				self._db_where_in_datas
+		))
 		return self._cursor.fetchall()
 
 	def close(self):
@@ -55,5 +77,5 @@ class ConnectDb(object):
 if __name__ == '__main__':
     db = ConnectDb('127.0.0.1', 'root', 'root', 'appcenter')
     # print(db.connect().select('softwares_view', 'id,name', '1,2,3').get())
-    print(db.connect().table('softwares_view').select('id,name').whereIn('id', '1,2,3').get())
+    print(db.connect().table('softwares_view').select('id,name').where('release_status', '=', 'show').whereIn('id', '1,2,3').get())
     db.close()

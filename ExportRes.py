@@ -13,12 +13,13 @@ from ConnectDb import *
 
 class ExportRes(object):
 
-	def __init__(self, host, user, password, db, table, select):
+	def __init__(self, host, user, password, db, table, status, select):
 		self._host = host
 		self._user = user
 		self._password = password
 		self._db = db
 		self._table = table
+		self._status = status
 		self._select = select
 
 	def __getIds(self):
@@ -30,7 +31,7 @@ class ExportRes(object):
 
 	def __getRes(self):
 		connectDb = ConnectDb(self._host, self._user, self._password, self._db)
-		return connectDb.connect().table(self._table).select(self._select).whereIn('id', self.__getIds()).get()
+		return connectDb.connect().table(self._table).select(self._select).where('release_status', '=', self._status).whereIn('id', self.__getIds()).get()
 
 	def exportExcel(self):
 		print(self.__getRes())
@@ -42,8 +43,9 @@ if __name__ == '__main__':
 	password = mysql['password']
 	db = mysql['db']
 
-	table = input('please enter you whant search table: ')
-	fields = input('please enter you whant search fields: ')
+	table = input('please enter you want to search table (like games_view or softwares_view): ')
+	status = input('please enter you want to display status (like show or hide): ')
+	fields = input('please enter you want to search fields (like id, name, level): ')
 
-	e = ExportRes(host, user, password, db, table, fields)
+	e = ExportRes(host, user, password, db, table, status, fields)
 	e.exportExcel()
