@@ -33,8 +33,10 @@ class ExportRes(object):
 
 	def __getRes(self):
 		connectDb = ConnectDb(self._host, self._user, self._password, self._db, self._port)
-		return connectDb.connect().table(self._table).select(self._select).where('release_status', '=', self._status).whereIn('id', self.__getIds()).get()
-
+		res = connectDb.connect().table(self._table).select(self._select).where('release_status', '=', self._status).whereIn('id', self.__getIds()).get()
+		connectDb.close()
+		return res
+		
 	def exportExcel(self):
 		print('正在导出Excel文档请稍等...')
 		wb = Workbook()
