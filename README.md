@@ -1,16 +1,15 @@
 # exportFormattxt
 Export mysql datas use txt file
 
-### Conifg
-Set mysql config by youself
+### Set yourself mysql conifg
+Copy `config.example.ini` and renamed `config.ini` then set it by yourself:
 ```
-Mysql = {
-	'host': '127.0.0.1',
-	'user': 'root',
-	'password': 'root',
-	'db': 'db',
-	'port': '3306'
-}
+[mysql]
+host: 127.0.0.1
+user: root
+password: root
+db: youselfdb
+port: 3306
 ```
 
 ### Input some id in id.txt
