@@ -6,18 +6,20 @@
 __author__ = 'Lavenkin'
 
 import mysql.connector
-from Config import *
+from configparser import ConfigParser
 
 class ConnectDb(object):
 
 	def __init__(self):
-		config = Config.Mysql.value
+		# config = Config.Mysql.value
+		cfg = ConfigParser()
+		cfg.read('config.ini')
 
-		self._host = config['host']
-		self._user = config['user']
-		self._password = config['password']
-		self._db = config['db']
-		self._port = config['port']
+		self._host = cfg.get('mysql', 'host')
+		self._user = cfg.get('mysql', 'user')
+		self._password = cfg.get('mysql', 'password')
+		self._db = cfg.get('mysql', 'db')
+		self._port = cfg.get('mysql', 'port')
 
 	def connect(self):
 		try:

@@ -9,3 +9,4 @@ build
 /.vscode
 .DS_Store
 file
+config.ini
